@@ -1,6 +1,7 @@
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
+from Crypto.Hash import HMAC, SHA256
 
 '''
 the encrypt function. first generate the initialization vector
@@ -14,7 +15,8 @@ def encrypt(msg, key):
     cipher = AES.new(key, AES.MODE_CBC, iv)
     padded_msg = pad(msg.encode(), AES.block_size)
     ciphertext = cipher.encrypt(padded_msg)
-    return iv + ciphertext
+    hmac = HMAC.new(key, iv + ciphertext, digestmod=SHA256)
+    return iv + ciphertext + hmac.digest()
 
 # ask the user for a key length
 key_len = int(input("enter a key length: "))
