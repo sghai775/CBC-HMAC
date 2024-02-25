@@ -1,3 +1,7 @@
+'''
+written by nick thoennes and surya ghai for cmsc398Q spring 2024 assignment #2
+'''
+
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
@@ -16,6 +20,9 @@ def encrypt(msg, key):
     padded_msg = pad(msg.encode(), AES.block_size)
     ciphertext = cipher.encrypt(padded_msg)
     hmac = HMAC.new(key, iv + ciphertext, digestmod=SHA256)
+
+    print("your HMAC is: ", hmac.digest().hex())
+
     return iv + ciphertext + hmac.digest()
 
 # ask the user for a key length

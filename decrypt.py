@@ -1,3 +1,6 @@
+'''
+written by nick thoennes and surya ghai for cmsc398Q spring 2024 assignment #2
+'''
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Hash import HMAC, SHA256
@@ -26,7 +29,7 @@ def decrypt(encrypted_msg, key):
 
     
     cipher = AES.new(key, AES.MODE_CBC, iv)
-    msg = cipher.decrypt(encrypted_msg[block_size:])
+    msg = cipher.decrypt(encrypted_msg[block_size:hmac_start])
     msg = unpad(msg, block_size)
     return msg.decode()
 
