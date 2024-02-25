@@ -22,9 +22,9 @@ def decrypt(encrypted_msg, key):
     hmac = encrypted_msg[hmac_start:]
 
     # verify the HMAC
-    hmac = HMAC.new(key, iv+cipher, digestmod=SHA256)
-    expected_mac = hmac.digest()
-    if expected_mac != hmac:
+    expected_hmac = HMAC.new(key, iv+cipher, digestmod=SHA256)
+    expected_hmac = expected_hmac.digest()
+    if expected_hmac != hmac:
         raise ValueError("verification failed")
 
     
