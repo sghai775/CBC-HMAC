@@ -1,5 +1,6 @@
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
+from Crypto.Hash import HMAC, SHA256
 
 '''
 the decrypt function. 
@@ -12,6 +13,18 @@ then decode the msg
 def decrypt(encrypted_msg, key):
     block_size = AES.block_size
     iv = encrypted_msg[:block_size]
+    
+    hmac_start = len(encrypted_msg) - SHA256.digest_size
+    cipher = encrypted_msg[block_size:hmac_start]
+    hmac = encrypted_msg[hmac_start:]
+
+    # verify the HMAC
+    hmac = HMAC.new(key, iv+cipher, digestmod=SHA256)
+    expected_mac = hmac.digest()
+    if expected_mac != hmac:
+        raise ValueError("verification failed")
+
+    
     cipher = AES.new(key, AES.MODE_CBC, iv)
     msg = cipher.decrypt(encrypted_msg[block_size:])
     msg = unpad(msg, block_size)
