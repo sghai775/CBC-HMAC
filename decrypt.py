@@ -19,14 +19,14 @@ def decrypt(encrypted_msg, key):
     hmac = encrypted_msg[hmac_start:]
 
     # verify the HMAC
-    hmac = HMAC.new(key, iv+cipher, digestmod=SHA256)
-    expected_mac = hmac.digest()
-    if expected_mac != hmac:
+    expected_hmac = HMAC.new(key, iv+cipher, digestmod=SHA256)
+    expected_hmac = expected_hmac.digest()
+    if expected_hmac != hmac:
         raise ValueError("verification failed")
 
     
     cipher = AES.new(key, AES.MODE_CBC, iv)
-    msg = cipher.decrypt(encrypted_msg[block_size:])
+    msg = cipher.decrypt(encrypted_msg[block_size:hmac_start])
     msg = unpad(msg, block_size)
     return msg.decode()
 
