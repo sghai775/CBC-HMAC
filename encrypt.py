@@ -1,5 +1,5 @@
 '''
-written by nick thoennes and surya ghai for cmsc398Q spring 2024 assignment #2
+written by nick thoennes and surya ghai
 '''
 
 from Crypto.Cipher import AES
